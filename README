@@ -1,2 +1,202 @@
-# GLAPD2
-design common and specific primer for LAMP using the whole genome
+This is a customizable LAMP primer sets designing system: GLAPD (whole genome based LAMP primer design for a set of target genomes).
+######
+Introduction:
+  LAMP(Loop-mediated isothermal amplification) is a simple and effective new method to amplify DNA sequence.
+  One LAMP primer set contains four single LAMP primers from six primer regions in genome. The six regions are F3, F2, F1c, B1c, B2 and B3. Sequences from F1c and F2 are synthesized into primer FIP and sequences from B1c and B2 are synthesized into BIP. In order to accelerate the amplification, two additional loop primers(LF, LB) can be added.
+
+  GLAPD can design LAMP primer sets based on whole genome. It can design common primers for a set of target genomes and the primers are specific for background genomes.
+  Firstly, GLAPD identifies all candiate single primer regions. Then those single primers are aligned to target genomes and background genomes. Thirdly, GLAPD combines candidate single primers into LAMP primer sets. At last the commonality and specificity check are calculated for LAMP primer sets with the information from alignment. 
+######
+COPYRIGHT:
+This system is free for personal, academic and non-profit use from http://cgm.sjtu.edu.cn/GLAPD/.
+For commercial users, please contact <ccwei@sjtu.edu.cn>.
+######
+SYSTEM REQUIREMENTS:
+GLAPD now runs under Linux operation system, it needs perl and gcc. If run GPU version, the computer capability of GPU >=2.0. 
+######
+OTHER SOFTWARES MAY BE NEEDED
+Bowtie, which could be downloaded from http://bowtie-bio.sourceforge.net/index.shtml
+CUDA driver, which could be downloaded from http://www.nvidia.com
+######
+Files and Directories:
+This system is packaged in one file, "GLAPD.tar.gz", which can be downloaded from http://cgm.sjtu.edu.cn/GLAPD/. Important files inside this tar.gz file are listed here. 
+
+|-Par/
+     tm_nn_parameter.txt	Parameters for calculating Tm.
+     stab_parameter.txt		Parameters for calculating the stability of single primers.
+     *.db, *.ds			Sixteen files for calculating the secondary structure of primers.
+|-par.pl			Get the information of positions and mismatches for each single primer.
+|-single.c			The CPU version of GLAPD for identify single primer regions.
+|-LAMP.c			The CPU version of GLAPD for design LAMP primer sets.
+|-Makefile			Makefile for CPU version.
+|-GPU/
+     single.cu			The GPU version of GLAPD for identify single primer regions.
+     LAMP.cu			The GPU version of GLAPD for design LAMP primer sets.
+     Makefile			Makefile for GPU version.
+|-example/
+     example.fa			Sequences as example, from "NC_002951.2 Staphylococcus aureus subsp. aureus COL chromosome".
+     target-list.txt		The list of names from target genomes. It contains 43 strains of S. aureus.
+     background-list.txt	The list of names from background genomes. It contains 41 strains of other bacteria.
+     index.*			The index files for Bowtie software.
+######
+INSTALLATION:
+  tar -zxvf GLAPD.tar.gz
+If you want to use CPU version:
+  cd GLAPD/
+  make
+If you want to use GPU version:
+  cd GLAPD/GPU/
+  make
+######
+QUICK START:
+1. If you want design LAMP primers for a sequence without taking care of commonality and specificity:
+  cd GLAPD/
+  ./Single -in example/example.fa -out Test
+    (Two files "Inner/Test" and "Outer/Test" are created.)
+  ./LAMP -in Test -ref example/example.fa -out success.txt -fast
+    (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
+
+2. If you want design common LAMP primers without taking care of specificity:
+  cd GLAPD/
+  ./Single -in example/example.fa -out Test
+    (Two files "Inner/Test" and "Outer/Test" are created.)
+  perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --common example/target-list.txt
+    (Three files "Inner/Test-common_list.txt", "Inner/Test-common.txt" and "Outer/Test-common.txt" are created.)
+  ./LAMP -in Test -ref example/example.fa -out success.txt -common -fast
+    (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
+
+3. If you want design specific LAMP primers without taking care of commonality:
+  cd GLAPD/
+  ./Single -in example/example.fa -out Test
+    (Two files "Inner/Test" and "Outer/Test" are created.)
+  perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --specific example/background-list.txt       
+    (Two files "Inner/Test-specific.txt" and "Outer/Test-specific.txt" are created.)                        
+  ./LAMP -in Test -ref example/example.fa -out success.txt -specific -fast        
+    (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
+
+4. If you want design common and specific LAMP primers:
+   cd GLAPD/
+  ./Single -in example/example.fa -out Test
+    (Two files "Inner/Test" and "Outer/Test" are created.)
+  perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --common example/target-list.txt --left
+    (Five files "Inner/Test-common_list.txt", "Inner/Test-common.txt", "Inner/Test-specific.txt", "Outer/Test-common.txt" and "Outer/Test-specific.txt" are created.)
+  ./LAMP -in Test -ref example/example.fa -out success.txt -common -specific -fast
+    (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
+######
+RUN THE SYSTEM:
+1.Identify candidate single primer regions:
+Command:
+  Single -in <ref_genome> -out <single_primers> [options]*
+
+Arguments:
+  -in <ref_genome>
+    reference genome, fasta formate
+  -out <single_primers>
+    output the candidate single primers
+  -dir <directory>
+    the directory for output file
+    default: current directory
+  -loop
+    identifiy candidate single primer regions for loop primers
+  -check <int>
+    check single primers' secondary structure or not
+    0: don't check secondary structure; other values: check
+    default: 1
+  -par <par_directory>
+    parameter files under the directory are used to check primers' secondary structure
+    default: GLAPD/Par/
+  -h[-help]
+    print usage
+
+2.Align sequences from single primer regions(optional):
+Command:
+  perl par.pl --in <sinlge_primers_file> --ref <ref_genome> --common[--specific] <genomes_list> --bowtie <bowtie> --index <database> [options]*
+
+Arguments:
+  --in <single_primers_file>
+    the file name of candidate single primer regions, files are generated from Single program
+  --ref <ref_genome>
+    reference genome, fasta formate
+  --dir <directory>
+    dirctory for files of candidate single primer regions
+    default: current directory
+  --loop
+    include loop primers
+  --common <genomes_list>
+    the genomes in the file(target genomes) are expected to be amplified by LAMP primer sets
+  --specific <genomes_list>
+    the genomes in the file(background genomes) are not expected to be amplified by LAMP primer sets
+  --left
+    background_group = all_genome_in_database - target_group
+    used with --common
+    invalid if exist --specific
+  --bowtie <bowtie>
+    the bowtie program
+  --index <database>
+    bowtie index file name, comma-separated
+  --mis_s <int>
+    the max number of mismatches allowed when align single primers to background genomes
+    this value between 0 and 3. the bigger of the value, the more specific
+    default: 2
+  --mis_c <int>
+    the max number of mismatches allowed when align single primers to target genomes
+    this value between 0 and 3. the smaller of the value, the more common
+    default: 0
+  --threads <int>
+    number of threads to launch when align
+    default: 1
+  --help|--h
+    print help information
+
+3.Design LAMP primer sets:
+Command:
+  LAMP -in <sinlge_primers_file> -ref <ref_genome> -out <LAMP_primer_sets> [options]*
+
+Arguments:
+  -in <single_primers_file>
+    the file name of candidate single primer regions, files are generated from Single program
+  -ref <ref_genome>
+    reference genome, fasta formate
+  -dir <directory>
+    the directory for output file
+    default: current directory
+  -out <LAMP_primer_sets>
+    output successfully designed LAMP primer sets
+  -num <int>
+    the expected output number of LAMP primer sets
+    default: 10
+  -loop
+    design LAMP primer sets with loop primers
+  -common
+    design common LAMP primer sets those can amplify more than one target genomes
+  -specific
+    design specific LAMP primer sets those can't amplify any background genomes
+  -check <int>
+    check primers' tendency of binding to another in one LAMP primer set or not
+    0: don't check; other values: check
+    default: 1
+  -par <par_directory>
+    parameter files under the directory are used to check primers' binding tendency
+    default: GLAPD/Par/
+  -fast
+    fast mode to design LAMP primer sets, in this mode GLAPD may lost some right results
+  -h/-help
+    print usage
+######
+Attention:
+1) The reference genome must be fasta format.
+2) The common list file and specific list file used in step 2 must be one genome name per line.
+3) The common list file and specific list file used in step 2 can be generated by taking the sequence names from target or background genomes directly.
+4) The bowtie index can be generated by "bowtie-build" command, more details in http://bowtie-bio.sourceforge.net/tutorial.shtml.  
+######
+TIPS:
+1) Select reference genome:
+  The reference genome can be select one randomly from the group of target genomes, or the most expected genome amplified by the LAMP primer set.
+2) Specific file:
+  When run the step 2, if you have the "common file", you can use "--left" option to replace the "--specific". In this way, all genomes in database expect for those in "common file" are defined as the background genomes.
+3) Fast mode:
+  When run the step 3, use the "-fast" option can accelerate the designing. But this mode may lost some right LAMP primer sets.
+######
+If you have any questions, please contact with us:
+Ben Jia: chenmodexiaoxi@126.com
+Chaochun Wei: ccwei@sjtu.edu.cn
