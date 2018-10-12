@@ -19,7 +19,7 @@ Bowtie, which could be downloaded from http://bowtie-bio.sourceforge.net/index.s
 CUDA driver, which could be downloaded from http://www.nvidia.com
 ######
 Files and Directories:
-This system is packaged in one file, "GLAPD.tar.gz", which can be downloaded from http://cgm.sjtu.edu.cn/GLAPD/. Important files inside this tar.gz file are listed here. 
+This system is packaged in one file, "GLAPD.tar.gz", which can be downloaded from http://cgm.sjtu.edu.cn/GLAPD/ and https://github.com/jiqingxiaoxi/GLAPD2.git. The example files can also be downloaded from https://github.com/jiqingxiaoxi/example.git. Important files inside this tar.gz file are listed here. 
 
 |-Par/
      tm_nn_parameter.txt	Parameters for calculating Tm.
