@@ -35,8 +35,8 @@ This system is packaged in one file, "GLAPD.tar.gz", which can be downloaded fro
      Makefile			Makefile for GPU version.
 |-example/
      example.fa			Sequences as example, from "NC_002951.2 Staphylococcus aureus subsp. aureus COL chromosome".
-     target-list.txt		The list of names from target genomes. It contains 43 strains of S. aureus.
-     background-list.txt	The list of names from background genomes. It contains 41 strains of other bacteria.
+     target-list.txt		The list of names from target genomes. It contains 3 strains of S. aureus.
+     background-list.txt	The list of names from background genomes. It contains 3 strains of other bacteria.
      index.*			The index files for Bowtie software.
 ######
 INSTALLATION:
