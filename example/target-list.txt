@@ -1,0 +1,3 @@
+>NC_002951.2 Staphylococcus aureus subsp. aureus COL, complete genome
+>NC_017340.1 Staphylococcus aureus 04-02981, complete genome
+>NC_002745.2 Staphylococcus aureus subsp. aureus N315 DNA, complete genome
