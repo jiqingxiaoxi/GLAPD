@@ -329,7 +329,7 @@ for($i=0;$i<@list;$i++)
 		$file[1]=$list[$i]."-common.txt";
 		open(COMMON,">$file[1]") or die "Can't create $file[1] file!\n";
 	}
-	if($special_file || $left)
+	if(($special_file || $left)&&($i!=2))
 	{
 		$file[2]=$list[$i]."-specific.txt";
 		open(SPECIAL,">$file[2]") or die "Can't create $file[2] file!\n";
@@ -442,6 +442,10 @@ for($i=0;$i<@list;$i++)
 					print COMMON "$pos\t$len\t$common{$flag}\t$array[3]\t$status[2]\t$status[3]\n";
 					next;
 				}
+			}
+			if($i==2)
+			{
+				next;
 			}
 			if($special_file)
 			{
