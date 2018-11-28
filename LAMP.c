@@ -3133,13 +3133,12 @@ main(int argc,char **argv)
                                                                         break;
 				                                if(p_B3->total<j)
 				                                        continue;
-								if((flag[3]&p_B3->minus)==0)
+								flag[4]=flag[3]&p_B3->minus;
+								if(flag[4]==0)
 									continue;
-printf("AA\n");
 								GC=check_gc(seq,p_F3->pos,(p_B3->pos+p_B3->len));
-								if((GC&flag[3])!=GC)
+								if((GC&flag[4])!=GC)
 									continue;
-printf("CC\n");
 							//Tm
 								if(p_F1c->Tm-p_B3->Tm<3)
 									continue;
@@ -3183,14 +3182,14 @@ printf("CC\n");
 									}
 								}
 							//check second structure
+								generate_primer(seq,F3,p_F3->pos,p_F3->len,0);
+								generate_primer(seq,F2,p_F2->pos,p_F2->len,0);
+								generate_primer(seq,F1c,p_F1c->pos,p_F1c->len,1);
+								generate_primer(seq,B1c,p_B1c->pos,p_B1c->len,0);
+								generate_primer(seq,B2,p_B2->pos,p_B2->len,1);
+								generate_primer(seq,B3,p_B3->pos,p_B3->len,1);
 								if(flag[7])
 								{
-									generate_primer(seq,F3,p_F3->pos,p_F3->len,0);
-									generate_primer(seq,F2,p_F2->pos,p_F2->len,0);
-									generate_primer(seq,F1c,p_F1c->pos,p_F1c->len,1);
-									generate_primer(seq,B1c,p_B1c->pos,p_B1c->len,0);
-									generate_primer(seq,B2,p_B2->pos,p_B2->len,1);
-									generate_primer(seq,B3,p_B3->pos,p_B3->len,1);
 									success=check_structure(F3,F2,F1c,B1c,B2,B3,GC,stackEntropies,stackEnthalpies,stackint2Entropies,stackint2Enthalpies,dangleEntropies3,dangleEnthalpies3,dangleEntropies5,dangleEnthalpies5,hairpinLoopEntropies,interiorLoopEntropies,bulgeLoopEntropies,hairpinLoopEnthalpies,interiorLoopEnthalpies,bulgeLoopEnthalpies,tstackEntropies,tstackEnthalpies,tstack2Entropies,tstack2Enthalpies,triloopEntropies1,triloopEnthalpies1,tetraloopEntropies1,tetraloopEnthalpies1,triloopEntropies2,triloopEnthalpies2,tetraloopEntropies2,tetraloopEnthalpies2,numTriloops,numTetraloops,atpS,atpH,error);
 									if(success==0)
 									{
@@ -4659,9 +4658,16 @@ int design_loop(struct Primer *p_F3,struct Primer *p_F2,struct Primer *p_LF,stru
 		if(LF->pos+LF->len>p_F1c->pos)
 			break;
 		if(LF->minus==0)
+		{
+			LF=LF->next;
 			continue;
-		if(LF->minus&GC!=GC)
+		}
+		if((LF->minus&GC)!=GC)
+		{
+			LF=LF->next;
 			continue;
+		}
+
 		LB=p_LB;
 		if(flag[7])
 			generate_primer(seq,primer_LF,LF->pos,LF->len,1);
@@ -4670,9 +4676,15 @@ int design_loop(struct Primer *p_F3,struct Primer *p_F2,struct Primer *p_LF,stru
 			if(LB->pos+LB->len>p_B2->pos)
 				break;
 			if(LB->plus==0)
+			{
+				LB=LB->next;
 				continue;
-			if(LB->plus&GC!=GC)
+			}
+			if((LB->plus&GC)!=GC)
+			{
+				LB=LB->next;
 				continue;
+			}
 		//check_common
 			if(flag[5])
 			{
@@ -4714,9 +4726,15 @@ int design_loop(struct Primer *p_F3,struct Primer *p_F2,struct Primer *p_LF,stru
                 if(LF->pos+LF->len>p_F1c->pos)
                         break;
 		if(LF->minus==0)
+		{
+			LF=LF->next;
 			continue;
-		if(LF->minus&GC!=GC)
+		}
+		if((LF->minus&GC)!=GC)
+		{
+			LF=LF->next;
 			continue;
+		}
 	//check_common
 		if(flag[5])
 		{
@@ -4752,9 +4770,15 @@ int design_loop(struct Primer *p_F3,struct Primer *p_F2,struct Primer *p_LF,stru
                 if(LB->pos+LB->len>p_B2->pos)
                         break;
 		if(LB->plus==0)
+		{
+			LB=LB->next;
 			continue;
-		if(LB->plus&GC!=GC)
+		}
+		if((LB->plus&GC)!=GC)
+		{
+			LB=LB->next;
 			continue;
+		}
 	//check_common
 		if(flag[5])
 		{
