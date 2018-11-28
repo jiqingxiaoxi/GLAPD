@@ -2738,9 +2738,9 @@ void candidate_primer(char *seq,int flag[],FILE *Inner,FILE *Outer,FILE *Loop,in
 				if(flag[7]&&Svalue[0]>=3&&Svalue[1]>=4&&i<=22&&Tm>=64&&GC_content>=40)
                                         loop_plus++; //GC-rich
                                 if(flag[7]&&Svalue[0]>=3&&Svalue[1]>=4&&i>=20&&Tm>=60&&Tm<=63&&GC_content<=65)
-                                        loop_plus=inner_plus+2; //AT-rich
+                                        loop_plus=loop_plus+2; //AT-rich
                                 if(flag[7]&&Svalue[0]>=3&&Svalue[1]>=4&&i>=20&&i<=22&&Tm>=64&&Tm<=66&&GC_content>=40&&GC_content<=65)
-                                        loop_plus=inner_plus+4;
+                                        loop_plus=loop_plus+4;
 			}
 			if(minus==1)
 			{
@@ -2764,9 +2764,9 @@ void candidate_primer(char *seq,int flag[],FILE *Inner,FILE *Outer,FILE *Loop,in
                                 if(flag[7]&&Svalue[0]>=3&&Svalue[1]>=4&&i<=22&&Tm>=64&&GC_content>=40)
                                         loop_minus++; //GC-rich
                                 if(flag[7]&&Svalue[0]>=3&&Svalue[1]>=4&&i>=20&&Tm>=60&&Tm<=63&&GC_content<=65)
-                                        loop_minus=inner_minus+2; //AT-rich
+                                        loop_minus=loop_minus+2; //AT-rich
                                 if(flag[7]&&Svalue[0]>=3&&Svalue[1]>=4&&i>=20&&i<=22&&Tm>=64&&Tm<=66&&GC_content>=40&&GC_content<=65)
-                                        loop_minus=inner_minus+4;
+                                        loop_minus=loop_minus+4;
                         }
 			if(inner_plus||inner_minus)
 			{
