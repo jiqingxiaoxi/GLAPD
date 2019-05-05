@@ -7,6 +7,7 @@
 #include<sys/stat.h>
 #include<cuda.h>
 #include<cuda_runtime.h>
+#include<ctype.h>
 
 __constant__ int const_int[20];
 __constant__ double parameter[5730];
@@ -3169,7 +3170,7 @@ struct INFO *read_list(char *path,int common_num[])
         return head;
 }
 
-main(int argc,char **argv)
+int main(int argc,char **argv)
 {
 	int i,j,flag[12],expect,circle,have,common_num[1],num[11],max_loop,min_loop,count[3],block,thread,threshold,before;
 	char *output,*prefix,*store_path,*path_fa,*inner,*outer,*loop,*par_path,*temp,*seq,*d_seq,primer[26],*d_numSeq;
@@ -4083,4 +4084,5 @@ main(int argc,char **argv)
 	end=time(NULL);
 	printf("It takes %0.1f seconds to free memory.\n",difftime(end,start));
 	printf("\nIt takes total %0.1f seconds to finish this design.\n",difftime(end,begin));
+	return 1;
 }
