@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include<time.h>
 #include<sys/stat.h>
+#include<ctype.h>
 
 char str2int(char c)
 {
@@ -2632,7 +2633,7 @@ int add_same(struct Primer *one[],struct Primer *two[],struct Primer *p_F3,struc
 	return replace;
 }
 
-main(int argc,char **argv)
+void main(int argc,char **argv)
 {
 	double stackEntropies[625],stackEnthalpies[625],stackint2Entropies[625],stackint2Enthalpies[625],dangleEntropies3[125],dangleEnthalpies3[125],dangleEntropies5[125],dangleEnthalpies5[125];
         double hairpinLoopEntropies[30],interiorLoopEntropies[30],bulgeLoopEntropies[30],hairpinLoopEnthalpies[30],interiorLoopEnthalpies[30],bulgeLoopEnthalpies[30],tstackEntropies[625],tstackEnthalpies[625],tstack2Entropies[625],tstack2Enthalpies[625];
