@@ -8,6 +8,7 @@
 #include<cuda_runtime.h>
 #include<time.h>
 #include<sys/stat.h>
+#include<ctype.h>
 
 __constant__ int d_NumL[2];
 __constant__ char d_Pchar[1084];
@@ -2993,7 +2994,7 @@ void create_file(char *prefix,char *dir,char *seq,int *len,int *rev_len,int leng
 	free(file);
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	double *H_parameter,*d_DPT;
 	int *len,*d_len,length,flag[10],i,*rev_len,*d_rev_len,Num[3],NumL[2],thread,block,*d_ps;
@@ -3373,4 +3374,5 @@ main(int argc, char **argv)
 	}
 	if(flag[8]||flag[9])
 		free(par_path);
+	return 1;
 }
