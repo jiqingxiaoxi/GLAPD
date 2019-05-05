@@ -29,6 +29,9 @@ This system is packaged in one file, "GLAPD.tar.gz", which can be downloaded fro
      single.cu			The GPU version of GLAPD for identify single primer regions.
      LAMP.cu			The GPU version of GLAPD for design LAMP primer sets.
      Makefile			Makefile for GPU version.
+|-bowtie/
+     bowtie			The bowtie program
+     bowtie-build		The bowtie-build program
 |-example/
      example.fa			Sequences as example, from "NC_002951.2 Staphylococcus aureus subsp. aureus COL chromosome".
      target-list.txt		The list of names from target genomes. It contains 3 strains of S. aureus.
