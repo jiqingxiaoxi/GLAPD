@@ -52,7 +52,7 @@ QUICK START:
   cd GLAPD/
   ./Single -in example/example.fa -out Test
     (Two files "Inner/Test" and "Outer/Test" are created.)
-  ./LAMP -in Test -ref example/example.fa -out success.txt -fast
+  ./LAMP -in Test -ref example/example.fa -out success.txt
     (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
 
 2. If you want design common LAMP primers without taking care of specificity:
@@ -61,7 +61,7 @@ QUICK START:
     (Two files "Inner/Test" and "Outer/Test" are created.)
   perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --common example/target-list.txt
     (Three files "Inner/Test-common_list.txt", "Inner/Test-common.txt" and "Outer/Test-common.txt" are created.)
-  ./LAMP -in Test -ref example/example.fa -out success.txt -common -fast
+  ./LAMP -in Test -ref example/example.fa -out success.txt -common
     (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
 
 3. If you want design specific LAMP primers without taking care of commonality:
@@ -70,7 +70,7 @@ QUICK START:
     (Two files "Inner/Test" and "Outer/Test" are created.)
   perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --specific example/background-list.txt       
     (Two files "Inner/Test-specific.txt" and "Outer/Test-specific.txt" are created.)                        
-  ./LAMP -in Test -ref example/example.fa -out success.txt -specific -fast        
+  ./LAMP -in Test -ref example/example.fa -out success.txt -specific        
     (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
 
 4. If you want design common and specific LAMP primers:
@@ -79,7 +79,7 @@ QUICK START:
     (Two files "Inner/Test" and "Outer/Test" are created.)
   perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --common example/target-list.txt --left
     (Five files "Inner/Test-common_list.txt", "Inner/Test-common.txt", "Inner/Test-specific.txt", "Outer/Test-common.txt" and "Outer/Test-specific.txt" are created.)
-  ./LAMP -in Test -ref example/example.fa -out success.txt -common -specific -fast
+  ./LAMP -in Test -ref example/example.fa -out success.txt -common -specific
     (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
 ######
 RUN THE SYSTEM:
