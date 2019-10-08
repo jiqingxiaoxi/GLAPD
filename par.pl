@@ -435,13 +435,13 @@ for($i=0;$i<@list;$i++)
 			{
 				next;
 			}
-			if($common_file)
+			if($common_file&&(exists $common{$flag}))
 			{
-				if(exists $common{$flag}&&$mismatch<=$par_common)
+				if($mismatch<=$par_common)
 				{
 					print COMMON "$pos\t$len\t$common{$flag}\t$array[3]\t$status[2]\t$status[3]\n";
-					next;
 				}
+				next;
 			}
 			if($i==2)
 			{
