@@ -72,6 +72,8 @@ void readLoop(FILE *file,double *v1,double *v2,double *v3)
                 *v3 =1.0*INFINITY;
         else 
                 sscanf(p, "%lf", v3);
+
+		free(line);
 }
 
 void getStack(double stackEntropies[],double stackEnthalpies[], char *path)
@@ -644,6 +646,9 @@ int get_num_line(char *path,int flag)
 	size=0;
 	while(fgets(line,i,fp)!=NULL)
 		size++;
+
+	free(line);
+
 	return size;
 }
 
@@ -3055,21 +3060,6 @@ void main(int argc, char **argv)
 	strcat(tm_path,"tm_nn_parameter.txt");
 
 //secondary structure
-	if(flag[8]&&flag[9]==0)
-	{
-		length=strlen(curren_path);
-                par_path=(char *)malloc(length+10);
-                memset(par_path,'\0',length+10);
-                strcpy(par_path,curren_path);
-                i=length-1;
-                if(par_path[i]!='/')
-                {
-			par_path[i+1]='/';
-                        par_path[i+2]='\0';
-                }
-                strcat(par_path,"Par/");
-	}
-
 	if(flag[8])
 	{
 		getStack(stackEntropies,stackEnthalpies,par_path);
@@ -3221,6 +3211,5 @@ void main(int argc, char **argv)
 	        free(tetraloopEntropies2);
 	        free(tetraloopEnthalpies2);
 	}
-	if(flag[8]||flag[9])
-		free(par_path);
+	free(par_path);
 }

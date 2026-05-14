@@ -72,6 +72,8 @@ void readLoop(FILE *file,double *v1,double *v2,double *v3)
                 *v3 =1.0*INFINITY;
         else 
                 sscanf(p, "%lf", v3);
+
+		free(line);
 }
 
 void getStack(double stackEntropies[],double stackEnthalpies[], char *path)
@@ -644,6 +646,9 @@ int get_num_line(char *path,int flag)
 	size=0;
 	while(fgets(line,i,fp)!=NULL)
 		size++;
+
+	free(line);
+
 	return size;
 }
 
